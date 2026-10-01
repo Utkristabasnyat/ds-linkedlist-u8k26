@@ -13,12 +13,12 @@ struct Node
 void addNodeFront(Node *&, float);
 void addNodeTail(Node *&, float);
 void deleteNode(Node *&, int);
+void insertNode(Node *&, int, float);
 void output(Node *);
 
 int main()
 {
     Node *head = nullptr;
-    int count = 0;
 
     // Create a linked list of random numbers.
     for (int i = 0; i < SIZE; i++)
@@ -48,51 +48,19 @@ int main()
 
     output(head);
 
-    // insert a node
+    // Insert a new node after a selected position.
     cout << "After which node to insert 10000? " << endl;
-
-    count = 1;
-    Node *current = head;
-
-    while (current)
-    {
-        cout << "[" << count++ << "] "
-             << current->value << endl;
-
-        current = current->next;
-    }
+    output(head);
 
     cout << "Choice --> ";
     cin >> entry;
 
-    current = head;
-    Node *prev = nullptr;
-
-    for (int i = 0; i < entry; i++)
-    {
-        prev = current;
-        current = current->next;
-    }
-
-    // Insert a node between prev and current.
-    Node *newnode = new Node;
-
-    newnode->value = 10000;
-    newnode->next = current;
-
-    if (prev == nullptr)
-    {
-        head = newnode;
-    }
-    else
-    {
-        prev->next = newnode;
-    }
+    insertNode(head, entry, 10000);
 
     output(head);
 
     // Delete the linked list.
-    current = head;
+    Node *current = head;
 
     while (current)
     {
@@ -171,6 +139,30 @@ void deleteNode(Node *&head, int position)
     }
 
     delete current;
+}
+
+void insertNode(Node *&head, int position, float value)
+{
+    Node *newNode = new Node;
+
+    newNode->value = value;
+
+    if (!head || position <= 0)
+    {
+        newNode->next = head;
+        head = newNode;
+        return;
+    }
+
+    Node *current = head;
+
+    for (int i = 1; i < position && current->next; i++)
+    {
+        current = current->next;
+    }
+
+    newNode->next = current->next;
+    current->next = newNode;
 }
 
 void output(Node *hd)
