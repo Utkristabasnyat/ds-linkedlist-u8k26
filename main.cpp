@@ -11,6 +11,7 @@ struct Node
 
 // Pass head by reference so the function can change the real head pointer.
 void addNodeFront(Node *&, float);
+void addNodeTail(Node *&, float);
 void output(Node *);
 
 int main()
@@ -25,6 +26,12 @@ int main()
         addNodeFront(head, tmp_val);
     }
 
+    output(head);
+
+    // Test adding a node to the end.
+    addNodeTail(head, 500);
+
+    cout << "After adding 500 to the end:" << endl;
     output(head);
 
     // deleting a node
@@ -133,6 +140,29 @@ void addNodeFront(Node *&head, float value)
     newNode->value = value;
     newNode->next = head;
     head = newNode;
+}
+
+void addNodeTail(Node *&head, float value)
+{
+    Node *newNode = new Node;
+
+    newNode->value = value;
+    newNode->next = nullptr;
+
+    if (!head)
+    {
+        head = newNode;
+        return;
+    }
+
+    Node *current = head;
+
+    while (current->next)
+    {
+        current = current->next;
+    }
+
+    current->next = newNode;
 }
 
 void output(Node *hd)
