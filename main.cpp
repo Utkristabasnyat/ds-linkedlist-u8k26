@@ -14,6 +14,7 @@ void addNodeFront(Node *&, float);
 void addNodeTail(Node *&, float);
 void deleteNode(Node *&, int);
 void insertNode(Node *&, int, float);
+void deleteList(Node *&);
 void output(Node *);
 
 int main()
@@ -59,17 +60,8 @@ int main()
 
     output(head);
 
-    // Delete the linked list.
-    Node *current = head;
-
-    while (current)
-    {
-        head = current->next;
-        delete current;
-        current = head;
-    }
-
-    head = nullptr;
+    // Delete the entire linked list.
+    deleteList(head);
 
     output(head);
 
@@ -163,6 +155,20 @@ void insertNode(Node *&head, int position, float value)
 
     newNode->next = current->next;
     current->next = newNode;
+}
+
+void deleteList(Node *&head)
+{
+    Node *current = head;
+
+    while (current)
+    {
+        head = current->next;
+        delete current;
+        current = head;
+    }
+
+    head = nullptr;
 }
 
 void output(Node *hd)
