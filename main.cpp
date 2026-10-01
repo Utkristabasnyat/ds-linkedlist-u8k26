@@ -9,9 +9,10 @@ struct Node
     Node *next;
 };
 
-// Pass head by reference so the function can change the real head pointer.
+// Pass head by reference so these functions can change the real head pointer.
 void addNodeFront(Node *&, float);
 void addNodeTail(Node *&, float);
+void deleteNode(Node *&, int);
 void output(Node *);
 
 int main()
@@ -34,7 +35,7 @@ int main()
     cout << "After adding 500 to the end:" << endl;
     output(head);
 
-    // deleting a node
+    // Delete a node chosen by the user.
     cout << "Which node to delete? " << endl;
     output(head);
 
@@ -43,32 +44,7 @@ int main()
     cout << "Choice --> ";
     cin >> entry;
 
-    // traverse that many times and delete that node
-    Node *current = head;
-    Node *prev = nullptr;
-
-    for (int i = 0; i < (entry - 1); i++)
-    {
-        prev = current;
-        current = current->next;
-    }
-
-    // at this point, delete current and reroute pointers
-    if (current)
-    {
-        if (prev == nullptr)
-        {
-            // deleting the head node
-            head = current->next;
-        }
-        else
-        {
-            prev->next = current->next;
-        }
-
-        delete current;
-        current = nullptr;
-    }
+    deleteNode(head, entry);
 
     output(head);
 
@@ -76,7 +52,7 @@ int main()
     cout << "After which node to insert 10000? " << endl;
 
     count = 1;
-    current = head;
+    Node *current = head;
 
     while (current)
     {
@@ -90,7 +66,7 @@ int main()
     cin >> entry;
 
     current = head;
-    prev = nullptr;
+    Node *prev = nullptr;
 
     for (int i = 0; i < entry; i++)
     {
@@ -98,7 +74,7 @@ int main()
         current = current->next;
     }
 
-    // at this point, insert a node between prev and current
+    // Insert a node between prev and current.
     Node *newnode = new Node;
 
     newnode->value = 10000;
@@ -106,7 +82,6 @@ int main()
 
     if (prev == nullptr)
     {
-        // inserting before the head
         head = newnode;
     }
     else
@@ -116,7 +91,7 @@ int main()
 
     output(head);
 
-    // deleting the linked list
+    // Delete the linked list.
     current = head;
 
     while (current)
@@ -163,6 +138,39 @@ void addNodeTail(Node *&head, float value)
     }
 
     current->next = newNode;
+}
+
+void deleteNode(Node *&head, int position)
+{
+    if (!head || position <= 0)
+    {
+        return;
+    }
+
+    Node *current = head;
+    Node *prev = nullptr;
+
+    for (int i = 1; i < position && current; i++)
+    {
+        prev = current;
+        current = current->next;
+    }
+
+    if (!current)
+    {
+        return;
+    }
+
+    if (prev == nullptr)
+    {
+        head = current->next;
+    }
+    else
+    {
+        prev->next = current->next;
+    }
+
+    delete current;
 }
 
 void output(Node *hd)
