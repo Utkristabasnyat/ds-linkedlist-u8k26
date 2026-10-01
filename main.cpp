@@ -1,7 +1,6 @@
 #include <iostream>
+#include <limits>
 using namespace std;
-
-const int SIZE = 7;
 
 struct Node
 {
@@ -21,49 +20,129 @@ int main()
 {
     Node *head = nullptr;
 
-    // Create a linked list of random numbers.
-    for (int i = 0; i < SIZE; i++)
+    int choice = 0;
+    float value;
+    int position;
+
+    while (choice != 7)
     {
-        int tmp_val = rand() % 100;
-        addNodeFront(head, tmp_val);
+        cout << "\nLinked List Menu" << endl;
+        cout << "1. Add node to front" << endl;
+        cout << "2. Add node to end" << endl;
+        cout << "3. Delete a node" << endl;
+        cout << "4. Insert a node" << endl;
+        cout << "5. Delete the list" << endl;
+        cout << "6. Print the list" << endl;
+        cout << "7. Exit" << endl;
+        cout << "Choice --> ";
+
+        cin >> choice;
+
+        // Make sure the user enters a valid menu number.
+        if (!cin || choice < 1 || choice > 7)
+        {
+            cout << "Invalid choice. Try again." << endl;
+
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            choice = 0;
+            continue;
+        }
+
+        if (choice == 1)
+        {
+            cout << "Enter value: ";
+            cin >> value;
+
+            if (!cin)
+            {
+                cout << "Invalid value." << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
+
+            addNodeFront(head, value);
+        }
+        else if (choice == 2)
+        {
+            cout << "Enter value: ";
+            cin >> value;
+
+            if (!cin)
+            {
+                cout << "Invalid value." << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
+
+            addNodeTail(head, value);
+        }
+        else if (choice == 3)
+        {
+            output(head);
+
+            if (!head)
+            {
+                continue;
+            }
+
+            cout << "Which node to delete? ";
+            cin >> position;
+
+            if (!cin || position <= 0)
+            {
+                cout << "Invalid position." << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
+
+            deleteNode(head, position);
+        }
+        else if (choice == 4)
+        {
+            output(head);
+
+            cout << "After which node should the new node be inserted? ";
+            cin >> position;
+
+            if (!cin || position < 0)
+            {
+                cout << "Invalid position." << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
+
+            cout << "Enter value: ";
+            cin >> value;
+
+            if (!cin)
+            {
+                cout << "Invalid value." << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
+            }
+
+            insertNode(head, position, value);
+        }
+        else if (choice == 5)
+        {
+            deleteList(head);
+            cout << "List deleted." << endl;
+        }
+        else if (choice == 6)
+        {
+            output(head);
+        }
     }
 
-    output(head);
-
-    // Test adding a node to the end.
-    addNodeTail(head, 500);
-
-    cout << "After adding 500 to the end:" << endl;
-    output(head);
-
-    // Delete a node chosen by the user.
-    cout << "Which node to delete? " << endl;
-    output(head);
-
-    int entry;
-
-    cout << "Choice --> ";
-    cin >> entry;
-
-    deleteNode(head, entry);
-
-    output(head);
-
-    // Insert a new node after a selected position.
-    cout << "After which node to insert 10000? " << endl;
-    output(head);
-
-    cout << "Choice --> ";
-    cin >> entry;
-
-    insertNode(head, entry, 10000);
-
-    output(head);
-
-    // Delete the entire linked list.
+    // Clean up any nodes left before the program ends.
     deleteList(head);
-
-    output(head);
 
     return 0;
 }
@@ -175,7 +254,7 @@ void output(Node *hd)
 {
     if (!hd)
     {
-        cout << "Empty list.\n";
+        cout << "Empty list." << endl;
         return;
     }
 
@@ -189,6 +268,4 @@ void output(Node *hd)
 
         current = current->next;
     }
-
-    cout << endl;
 }
