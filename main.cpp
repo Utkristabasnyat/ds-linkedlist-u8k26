@@ -9,6 +9,8 @@ struct Node
     Node *next;
 };
 
+// Pass head by reference so the function can change the real head pointer.
+void addNodeFront(Node *&, float);
 void output(Node *);
 
 int main()
@@ -16,25 +18,11 @@ int main()
     Node *head = nullptr;
     int count = 0;
 
-    // create a linked list of size SIZE with random numbers 0-99
+    // Create a linked list of random numbers.
     for (int i = 0; i < SIZE; i++)
     {
         int tmp_val = rand() % 100;
-        Node *newVal = new Node;
-
-        // adds node at head
-        if (!head)
-        {
-            head = newVal;
-            newVal->next = nullptr;
-            newVal->value = tmp_val;
-        }
-        else
-        {
-            newVal->next = head;
-            newVal->value = tmp_val;
-            head = newVal;
-        }
+        addNodeFront(head, tmp_val);
     }
 
     output(head);
@@ -136,6 +124,15 @@ int main()
     output(head);
 
     return 0;
+}
+
+void addNodeFront(Node *&head, float value)
+{
+    Node *newNode = new Node;
+
+    newNode->value = value;
+    newNode->next = head;
+    head = newNode;
 }
 
 void output(Node *hd)
